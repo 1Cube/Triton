@@ -22,7 +22,7 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2
         with:
-          version: "17.0"
+          version: "14.0"
           directory: ${{ runner.temp }}/llvm
 
       - name: Install Z3
