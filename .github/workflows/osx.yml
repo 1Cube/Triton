@@ -19,11 +19,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v2
-        with:
-          version: "17.0"
-          directory: ${{ runner.temp }}/llvm
+      # - name: Install LLVM and Clang
+      #   uses: KyleMayes/install-llvm-action@v2
+      #   with:
+      #     version: "17.0"
+      #     directory: ${{ runner.temp }}/llvm
 
       - name: Install Z3
         run: |
@@ -39,14 +39,14 @@ jobs:
         run: |
           python -m pip install meson
 
-      - name: Install Bitwuzla
-        run: |
-          git clone https://github.com/bitwuzla/bitwuzla.git
-          cd bitwuzla
-          python ./configure.py --shared --prefix $(pwd)/install
-          cd build
-          sudo ninja install
-          cd ..
+      # - name: Install Bitwuzla
+      #   run: |
+      #     git clone https://github.com/bitwuzla/bitwuzla.git
+      #     cd bitwuzla
+      #     python ./configure.py --shared --prefix $(pwd)/install
+      #     cd build
+      #     sudo ninja install
+      #     cd ..
 
       - name: Install Capstone
         run: |
@@ -73,12 +73,13 @@ jobs:
           cmake -DZ3_INTERFACE=ON \
                 -DZ3_INCLUDE_DIRS=${{ github.workspace }}/z3-4.13.3-arm64-osx-13.7/include \
                 -DZ3_LIBRARIES=${{ github.workspace }}/z3-4.13.3-arm64-osx-13.7/bin/libz3.a \
-                -DBITWUZLA_INTERFACE=ON \
-                -DBITWUZLA_INCLUDE_DIRS=${{ github.workspace }}/bitwuzla/install/include \
-                -DBITWUZLA_LIBRARIES=${{ github.workspace }}/bitwuzla/install/lib/libbitwuzla.dylib \
-                -DLLVM_INTERFACE=ON \
-                -DCMAKE_PREFIX_PATH=${{env.LLVM_PATH}} \
-                -DBOOST_INTERFACE=OFF ..
+                ..
+                # -DBITWUZLA_INTERFACE=OFF \
+                # -DBITWUZLA_INCLUDE_DIRS=${{ github.workspace }}/bitwuzla/install/include \
+                # -DBITWUZLA_LIBRARIES=${{ github.workspace }}/bitwuzla/install/lib/libbitwuzla.dylib \
+                # -DLLVM_INTERFACE=OFF \
+                # -DCMAKE_PREFIX_PATH=${{env.LLVM_PATH}} \
+                # -DBOOST_INTERFACE=OFF ..
           sudo make -j3 install
         env:
           Z3_INCLUDE_DIRS: ${{ github.workspace }}/z3-4.13.3-arm64-osx-13.7/include
