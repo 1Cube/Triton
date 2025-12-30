@@ -22,7 +22,7 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2
         with:
-          version: "14.0"
+          version: "17.0"
           directory: ${{ runner.temp }}/llvm
 
       - name: Install Z3
@@ -79,7 +79,7 @@ jobs:
                 -DLLVM_INTERFACE=ON \
                 -DCMAKE_PREFIX_PATH=${{env.LLVM_PATH}} \
                 -DBOOST_INTERFACE=OFF ..
-          sudo make -j install
+          sudo make -j3 install
         env:
           Z3_INCLUDE_DIRS: ${{ github.workspace }}/z3-4.13.3-arm64-osx-13.7/include
           Z3_LIBRARIES: ${{ github.workspace }}/z3-4.13.3-arm64-osx-13.7/bin/libz3.a
